@@ -48,7 +48,6 @@ def control_KEFF():
 
 
 def main():
-    print(log_check())
     pass
 
 
