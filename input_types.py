@@ -16,8 +16,8 @@ class neutronic_input(file):
 
      #If the file is yet to be created
     def __init__(self, uranium, thorium, iteration):
-        self.uranium = uranium
-        self.thorium = thorium
+        self.uranium   = uranium
+        self.thorium   = thorium
         self.iteration = iteration
         self.new_input()
 
@@ -26,10 +26,8 @@ class neutronic_input(file):
         path_file = path.realpath(f"inputs/{self.name}")
         with open(path_file, 'r') as file:
             lines = file.readlines()
-            self.U = lines[27].split()[1]
-            self.Th = lines[26].split()[1]
-        self.U = float(self.U)
-        self.Th = float(self.Th)
+            self.U  = float(lines[27].split()[1])
+            self.Th = float(lines[26].split()[1])
 
     #Create two new input files based on an existing one. In one of them 
     # the temperature changes, and, in the other one, the density changes.
@@ -65,14 +63,18 @@ class neutronic_input(file):
 class neutronic_output(file):
     def __init__(self, name):
         super().__init__(name)
-        self.__find_KEFF()                                  #Initialize parameters KEFF and KEFF_SD
+        self.__find_variables()
 
-    #Get the values for KEFF and KEFF_SD from an existing output file
-    def __find_KEFF(self):
+    #Get some variables from the output file
+    def __find_variables(self):
         path_file = path.realpath(f"outputs/{self.name}")
         with open(path_file, 'r') as file:
-            lines = file.readlines()                        #ANA_KEFF - line 256
-            self.KEFF = lines[256].split()[6]
-            self.KEFF_SD = lines[256].split()[7]
-        self.KEFF = float(self.KEFF)
-        self.KEFF_SD = float(self.KEFF_SD)
+            lines = file.readlines()
+            self.KEFF            = float(lines[256].split()[6])
+            self.KEFF_SD         = float(lines[256].split()[7])
+            self.BETA_ZERO       = float(lines[282].split()[6])
+            self.BETS_ZERO_DP    = float(lines[282].split()[7])
+            self.GEN_TIME        = float(lines[300].split()[6])
+            self.GEN_TIME_DP     = float(lines[300].split()[7])
+            self.BETA_EFF        = float(lines[304].split()[6])
+            self.BETA_EFF_DP     = float(lines[304].split()[7])

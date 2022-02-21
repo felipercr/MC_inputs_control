@@ -20,7 +20,7 @@ def log_check():
     return False
 
 
-#Makes many simulations to find the best values for U and Th
+#Find U and Th values for KEFF = 1 by doing some simulatios
 def control_KEFF():
 
     iteration = 2
