@@ -1,4 +1,4 @@
-from input_types import *
+from file_types import *
 
 #U + Th = 22.5
 def fuel_constant(): return 22.5                          
@@ -77,8 +77,8 @@ def main():
 
     print(f"Status do logserpent = {log_check()}\n")
 
-    #Obs: a função control_KEFF() ainda não funciona pois será necessário o comando usado 
-    # para fazer a simulação e estudar a forma como ele retorna os resultados
+    #Obs: a função control_KEFF() ainda não funciona, pois será necessário escrever o comando de 
+    # terminal usado para fazer a simulação e estudar a forma como ele retorna os resultados
 
 
 if __name__ == "__main__":
