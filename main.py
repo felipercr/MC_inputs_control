@@ -10,7 +10,7 @@ def calculate_U_and_Th(uranium, KEFF):
 #Ineficiente, demora pra encontrar a string
 #Não será muito problemático se a simulação demorar na ordem de minutos
 def log_check():
-    log = open("logserpent", 'r')
+    log = open("outputs/logserpent", 'r')
 
     if "Transport cycle completed in" in log.read():
         log.close()
@@ -39,6 +39,8 @@ def control_KEFF():
 
         while log_check() == False: pass
 
+        #Deletar o logserpent
+
         output = neutronic_output(f"msfr_mix1_benchmark_res ({iteration}).m")
         keff = output.KEFF
 
@@ -46,6 +48,7 @@ def control_KEFF():
 
 
 def main():
+    print(log_check())
     pass
 
 
