@@ -58,7 +58,7 @@ def main():
 
     mult = keff * keff_sd * beta   #Realizando uma operação genérica com estes valores
     print(f"\nKEFF = {keff}     KEFF_SD = {keff_sd}    BETA_ZERO = {beta}")
-    print(f"Produto entre destes valores (operação genérica) = {mult}\n")
+    print(f"Produto entre estes valores (operação genérica) = {mult}\n")
 
     #Teste da criação de novos inputs com valores novos de U e Th
     # neutronic_input.new_input(valor de U, valor de Th, número da iteração)
