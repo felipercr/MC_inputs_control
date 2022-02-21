@@ -33,7 +33,7 @@ def control_KEFF():
 
     while keff != 1:
         uranium, thorium = calculate_U_and_Th()
-        neutronic_input(uranium, thorium, iteration)
+        neutronic_input.new_input(uranium, thorium, iteration)
 
         #Comando de terminal para fazer outra iteração
 
@@ -61,7 +61,7 @@ def main():
     print(f"Produto entre destes valores (operação genérica) = {mult}\n")
 
     #Teste da criação de novos inputs com valores novos de U e Th
-    # neutronic_input(valor de U, valor de Th, número da iteração)
+    # neutronic_input.new_input(valor de U, valor de Th, número da iteração)
 
     neutronic_input.new_input(5.23, 27.234, 2)
 
