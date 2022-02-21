@@ -1,25 +1,30 @@
 from os import path
 
 
-class file():
-    def __init__(self, name):
-        self.name = name
-
-
 #Represents a neutronic input file
-class neutronic_input(file):
+class neutronic_input():
 
     #If the file already exists
     def __init__(self, name): 
-        super().__init__(name)
+        self.name = name
         self.__find_U_and_Th()
 
-     #If the file is yet to be created
-    def __init__(self, uranium, thorium, iteration):
-        self.uranium   = uranium
-        self.thorium   = thorium
-        self.iteration = iteration
-        self.new_input()
+    #Create a new input file with new values for U and Th
+    @classmethod
+    def new_input(cls, uranium, thorium, iteration):
+        cls.uranium   = uranium
+        cls.thorium   = thorium
+        cls.iteration = iteration
+        path_original = path.realpath(f"inputs/msfr_mix1_benchmark")
+        path_new = path.realpath(f"inputs/msfr_mix1_benchmark ({cls.iteration})")
+        with open(path_original, 'r') as original, open(path_new, 'w') as new:
+            for index, line in enumerate(original):
+                if index == 26:
+                    new.write("Th-232.09c      {:.3f}\n".format(cls.thorium))
+                elif index == 27:
+                    new.write("U-233.09c        {:.3f}\n".format(cls.uranium))
+                else:
+                    new.write(line)
 
     #Get the values from U and Th from an existing input file
     def __find_U_and_Th(self):                            
@@ -45,24 +50,11 @@ class neutronic_input(file):
                     temp.write(line)
                     density.write(line)
     
-    #Create a new input file with new values for U and Th
-    def new_input(self):
-        path_original = path.realpath(f"inputs/msfr_mix1_benchmark")
-        path_new = path.realpath(f"inputs/msfr_mix1_benchmark ({self.iteration})")
-        with open(path_original, 'r') as original, open(path_new, 'w') as new:
-            for index, line in enumerate(original):
-                if index == 26:
-                    new.write("Th-232.09c      {:.3f}\n".format(self.thorium))
-                elif index == 27:
-                    new.write("U-233.09c        {:.3f}\n".format(self.uranium))
-                else:
-                    new.write(line)
-
 
 #Represents the neutronic output file
-class neutronic_output(file):
+class neutronic_output():
     def __init__(self, name):
-        super().__init__(name)
+        self.name = name
         self.__find_variables()
 
     #Get some variables from the output file
