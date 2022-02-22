@@ -12,19 +12,17 @@ class neutronic_input():
     #Create a new input file with new values for U and Th
     @classmethod
     def new_input(cls, uranium, thorium, iteration):
-        cls.uranium   = uranium
-        cls.thorium   = thorium
-        cls.iteration = iteration
         path_original = path.realpath(f"inputs/msfr_mix1_benchmark")
-        path_new = path.realpath(f"inputs/msfr_mix1_benchmark ({cls.iteration})")
+        path_new = path.realpath(f"inputs/msfr_mix1_benchmark ({iteration})")
         with open(path_original, 'r') as original, open(path_new, 'w') as new:
             for index, line in enumerate(original):
                 if index == 26:
-                    new.write("Th-232.09c      {:.3f}\n".format(cls.thorium))
+                    new.write("Th-232.09c      {:.3f}\n".format(thorium))
                 elif index == 27:
-                    new.write("U-233.09c        {:.3f}\n".format(cls.uranium))
+                    new.write("U-233.09c        {:.3f}\n".format(uranium))
                 else:
                     new.write(line)
+        return cls(f"msfr_mix1_benchmark ({iteration})")
 
     #Get the values from U and Th from an existing input file
     def __find_U_and_Th(self):                            

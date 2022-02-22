@@ -63,7 +63,8 @@ def main():
     #Teste da criação de novos inputs com valores novos de U e Th
     # neutronic_input.new_input(valor de U, valor de Th, número da iteração)
 
-    neutronic_input.new_input(5.23, 27.234, 2)
+    inp = neutronic_input.new_input(5.23, 27.234, 2)
+    print(f"Novo Uranio = {inp.U}     Novo Torio = {inp.Th}\n")
 
     #Teste da criação de novos inputs com valores novos de densidade e temperatura
     # neutronic_input(nome do arquivo que desejamos mudar)
