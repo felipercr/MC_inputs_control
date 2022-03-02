@@ -41,7 +41,7 @@ def control_KEFF():
 
         #Deletar o logserpent
 
-        output = neutronic_output(f"msfr_mix1_benchmark_res ({iteration}).m")
+        output = neutronic_output(f"msfr_mix1_benchmark_{iteration}_res.m")
         keff = output.KEFF
 
         iteration += 1
