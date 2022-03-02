@@ -1,4 +1,5 @@
 from file_types import *
+import os
 
 #U + Th = 22.5
 def fuel_constant(): return 22.5                          
@@ -19,35 +20,51 @@ def log_check():
     log.close()
     return False
 
+def keff_converged(keff, keff_sd):
+    range = 2 * keff_sd
+    highest = keff + range
+    lowest = keff - range
+
+    if (keff > highest) or (keff < lowest): 
+        return False
+    else: 
+        return True
 
 #Find U and Th values for KEFF = 1 by doing some simulatios
-def control_KEFF():
+def control_keff():
 
     iteration = 2
 
     #Comando de terminal para fazer a primeira iteração
     #A primeiraiteração irá gerar o arquivo msfr_mix1_benchmark_res.m
+    input = os.path.realpath("inputs/msfr_mix1_benchmark")          #Encontra o caminho para o input
+    os.system(f"cd outputs; sss2 -omp 20 {input} > logserpent &")   #Executa sss2 no diretório outputs
 
     output = neutronic_output("msfr_mix1_benchmark_res.m")
     keff = output.KEFF
+    keff_sd = output.KEFF_SD
 
-    while keff != 1:
+    while keff_converged(keff, keff_sd) == False:
+        #Deleta o logserpent anterior para usar um novo
+        os.system("cd outputs; rm logserpent")
+
         uranium, thorium = calculate_U_and_Th()
         neutronic_input.new_input(uranium, thorium, iteration)
 
         #Comando de terminal para fazer outra iteração
+        input = os.path.realpath(f"inputs/msfr_mix1_benchmark_{iteration}")
+        os.system(f"cd outputs; sss2 -omp 20 {input} > logserpent &")
 
         while log_check() == False: pass
 
-        #Deletar o logserpent
-
         output = neutronic_output(f"msfr_mix1_benchmark_{iteration}_res.m")
         keff = output.KEFF
+        keff_sd = output.KEFF_SD
 
         iteration += 1
 
 
-def main():
+def testa_arquivos():
 
     #Teste da extração de elementos do arquivo de output
 
@@ -81,6 +98,9 @@ def main():
     #Obs: a função control_KEFF() ainda não funciona, pois será necessário escrever o comando de 
     # terminal usado para fazer a simulação e estudar a forma como ele retorna os resultados
 
+
+def main():
+    control_keff()
 
 if __name__ == "__main__":
     main()

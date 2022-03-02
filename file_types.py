@@ -1,6 +1,3 @@
-from os import path
-
-
 #Represents a neutronic input file
 class neutronic_input():
 
@@ -12,8 +9,8 @@ class neutronic_input():
     #Create a new input file with new values for U and Th
     @classmethod
     def new_input(cls, uranium, thorium, iteration):
-        path_original = path.realpath(f"inputs/msfr_mix1_benchmark")
-        path_new = path.realpath(f"inputs/msfr_mix1_benchmark_{iteration}")
+        path_original = f"inputs/msfr_mix1_benchmark"
+        path_new = f"inputs/msfr_mix1_benchmark_{iteration}"
         with open(path_original, 'r') as original, open(path_new, 'w') as new:
             for index, line in enumerate(original):
                 if index == 26:
@@ -26,7 +23,7 @@ class neutronic_input():
 
     #Get the values from U and Th from an existing input file
     def __find_U_and_Th(self):                            
-        path_file = path.realpath(f"inputs/{self.name}")
+        path_file = f"inputs/{self.name}"
         with open(path_file, 'r') as file:
             lines = file.readlines()
             self.U  = float(lines[27].split()[1])
@@ -36,9 +33,9 @@ class neutronic_input():
     # the temperature changes, and, in the other one, the density changes.
     # density: -4.1249 -> -3.95    temperature: 1200 -> 900 
     def change_density_and_temperature(self):
-        path_original = path.realpath(f"inputs/{self.name}")
-        path_temp = path.realpath(f"inputs/{self.name}_temperature")
-        path_density = path.realpath(f"inputs/{self.name}_density")
+        path_original = f"inputs/{self.name}"
+        path_temp = f"inputs/{self.name}_temperature"
+        path_density = f"inputs/{self.name}_density"
         with open(path_original, 'r') as original, open(path_temp, 'w') as temp, open(path_density, 'w') as density:
             for index, line in enumerate(original):
                 if index == 22:
@@ -57,7 +54,7 @@ class neutronic_output():
 
     #Get some variables from the output file
     def __find_variables(self):
-        path_file = path.realpath(f"outputs/{self.name}")
+        path_file = f"outputs/{self.name}"
         with open(path_file, 'r') as file:
             lines = file.readlines()
             self.KEFF            = float(lines[256].split()[6])

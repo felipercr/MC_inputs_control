@@ -22,3 +22,12 @@ ADJ_IFP_GEN_TIME          (idx, [1:   6]) = [  1.10890E-06 0.00062  1.10851E-06 
 ADJ_IFP_ANA_BETA_EFF      (idx, [1:  14]) = [  3.17636E-03 0.00703  2.69605E-04 0.02475  7.75192E-04 0.01431  5.69395E-04 0.01657  1.24437E-03 0.01102  2.66428E-04 0.02388  5.13728E-05 0.05702 ];
 
 Desses parâmetros eu só preciso dos dois primeiros valores após o sinal de igualdade (=).
+
+Critério de parada: 1 +/- 2*DP
+
+sss2 -omp 20 nomearquivoinput > logserpent &
+
+start_time = time.time()
+os.system(neutroniccommand)
+end_time = time.time()
+print("Neutronic execution time: {}".format(end_time - start_time))
