@@ -1,4 +1,4 @@
-#MC KEFF Control
+# MC KEFF Control
 
 This project is a python script made to control the KEFF variable from Serpent simulations (or Monte Carlo - MC). The idea is to manipulate the ammount of uranium and thorium untill KEFF converges to 1, this is done by making multiple simulations (iterations) untill it reach the expected value.
 
