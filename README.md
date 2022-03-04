@@ -8,7 +8,7 @@ How to use:
    2. run main.py
    3. the results (res.m files) will be saved in the "outputs" folder, and the new inputs generated will be saved in the "inputs" folder
 
-# The file_types library: 
+## The file_types library: 
 
 This is a library created to manipulate the necessary files. It contains two classes, neutronic_input() and neutronic_output().
    
