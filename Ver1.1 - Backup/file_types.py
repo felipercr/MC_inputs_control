@@ -9,29 +9,27 @@ class neutronic_input():
         self.__find_U_and_Th()
 
     #Create a new input file with new values for U and Th
-    def new_input(self, thorium, uranium):
-        with open(self.name, 'r') as f:
-            copy = f.readlines()
-            for index, line in enumerate(copy):
+    @classmethod
+    def new_input(cls, uranium, thorium, iteration):
+        path_original = f"msfr_mix1_benchmark"
+        path_new = f"msfr_mix1_benchmark_{iteration}"
+        with open(path_original, 'r') as original, open(path_new, 'w') as new:
+            for index, line in enumerate(original):
                 if index == 26:
-                    copy[index] = "Th-232.09c      {:.3f}\n".format(thorium)
+                    new.write("Th-232.09c      {:.3f}\n".format(thorium))
                 elif index == 27:
-                    copy[index] = "U-233.09c        {:.3f}\n".format(uranium)
-
-        with open(self.name, 'w') as f:
-            for line in copy:
-                f.write(line)
-
-        self.U = uranium
-        self.Th = thorium
+                    new.write("U-233.09c        {:.3f}\n".format(uranium))
+                else:
+                    new.write(line)
+        return cls(f"msfr_mix1_benchmark_{iteration}")
 
     #Get the values from U and Th from an existing input file
     def __find_U_and_Th(self):                            
         path_file = f"{self.name}"
         with open(path_file, 'r') as file:
             lines = file.readlines()
-            self.Th = float(lines[26].split()[1])
             self.U  = float(lines[27].split()[1])
+            self.Th = float(lines[26].split()[1])
 
     #Create two new input files based on an existing one. In one of them 
     # the temperature changes, and, in the other one, the density changes.
@@ -64,8 +62,8 @@ class neutronic_output():
             for line in file:
                 if re.search("ANA_KEFF", line):
                     print(line)
-                    self.keff = float(line.split()[6])
-                    self.keff_sd = float(line.split()[7])
+                    self.KEFF = float(line.split()[6])
+                    self.KEFF_SD = float(line.split()[7])
 
             #self.KEFF            = float(lines[256].split()[6])
             #self.KEFF_SD         = float(lines[256].split()[7])

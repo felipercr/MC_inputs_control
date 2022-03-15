@@ -1,0 +1,82 @@
+ 
+%-----Benchmark MSFR-----
+%-----Neutronic benchmark of the molten salt fast reactor in the frame of the EVOL and MARS collaborative projects-----
+%-----Initial test using ENDF7-----
+
+%-----Geometry-----
+
+surf 2  cuboid -230   230   -230   230   0   430 % External dimensions
+surf 3  inf
+
+% --- Cells:
+
+solid 3
+"./type8.ifc"
+
+% Middle fuel:
+
+cell 11  2  void      -3              % Boundary
+cell 19  0  fill 1    -2              % Reactor
+cell 20  0  outside    2
+
+
+mat Fuel  -4.1249 rgb 250 250 50
+Li-7.09c        77.499225
+Li-6.09c        0.000775
+F-19.09c       167.50
+Th-232.09c      19.539
+U-233.09c        3.035
+
+%-----Table 3 from Benchmark-----
+mat Blanket -4.1249 rgb 255 105 180
+Li-7.09c        77.499225
+Li-6.09c        0.000775
+F-19.09c       167.50
+Th-232.09c      22.5
+
+%-----Table 2 and Subsection 2.3.2 from Benchmark-----
+mat Clad -10 rgb 0 71 171
+Ni-nat.09c    677.53
+W-nat.09c     85.09
+Cr-nat.09c    68.36
+Mo-nat.09c    6.278
+Fe-nat.09c    5.391
+Ti-nat.09c    2.516
+6000.09c      2.508
+25055.09c     1.192
+Si-nat.09c    2.149
+13027.09c     0.444
+5010.09c      0.055919
+5011.09c      0.225081
+15031.09c     0.196
+S-nat.09c     0.034
+
+%-----Subsection 2.3.2 from Benchmark-----
+mat Prot -2.52 rgb 255 140 0
+5010.09c    0.021753673
+5011.09c    0.088113366
+%----There is no library for C 13. testing natural Carbon from existing library-----
+6000.09c    0.02746676
+
+%-----Cross section path-----
+
+set acelib "/home/cfx/vidal/rmb/sss_endfb7u.xsdata"
+set ures 1
+
+%-----Run, boundary and plot parameters-----
+
+plot 1 500 500 0
+plot 2 500 500 0
+plot 3 500 500 0
+
+mesh 1 500 500  0
+mesh 2 500 500  0
+mesh 3 500 500  0
+
+set pop 10000 100 10
+
+set bc 2 2 1
+
+set ifp 20
+
+set power 3.00E+09

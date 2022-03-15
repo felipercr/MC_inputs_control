@@ -1,12 +1,12 @@
 # MC KEFF Control
 
-This project is a python script made to control the KEFF variable from Serpent simulations (or Monte Carlo - MC). The idea is to manipulate the ammount of uranium and thorium untill KEFF converges to 1, this is done by making multiple simulations (iterations) untill it reach the expected value.
+This project is a python script made to control the KEFF variable from a Serpent simulation (or Monte Carlo - MC). The idea is to manipulate the amount of uranium and thorium until KEFF converges to 1, this is done by making multiple simulations (iterations) until it reach the expected value.
 
 How to use:
 
-   1. get a initial input file and put it into the "inputs" folder 
+   1. put the first input file in the main folder 
    2. run main.py
-   3. the results (res.m files) will be saved in the "outputs" folder, and the new inputs generated will be saved in the "inputs" folder
+   3. the input file and the resulting one (res.m file) will change until the value for keff converges. After the necessary iterations, we will be able to extract the values for U and Th that made the convergence possible.
 
 ## The file_types library: 
 
@@ -17,6 +17,7 @@ This is a library created to manipulate the necessary files. It contains two cla
       Ex:    out = neutronic_output("name of the file")
              keff = out.keff
              
-- To create a new input file with new values for U and Th, just create a neutronic_input() object calling the new_input() method
+- In order to change the uranium and thorium inputs from a preexisting file, just create a neutronic_input() object and call the new_input() method
 
-      Ex:    inp = neutronic_input.new_input(uranium, thorium, iteration)
+      Ex:    inp = neutronic_input.("name of the file")
+             inp.new_input(thorium, uranium)
