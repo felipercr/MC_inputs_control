@@ -1,41 +1,45 @@
- 
 %-----Benchmark MSFR-----
 %-----Neutronic benchmark of the molten salt fast reactor in the frame of the EVOL and MARS collaborative projects-----
 %-----Initial test using ENDF7-----
 
-%-----Geometry-----
+/************************
+ * Geometry definitions *
+ ************************/
 
-surf 2  cuboid -230   230   -230   230   0   430 % External dimensions
-surf 3  inf
+surf 1 cyl 0.0 0.0 112.75 118.75 306.75% fuel
+surf 2 cyl 0.0 0.0 114.75 118.75 306.75% clad
+surf 3 cyl 0.0 0.0 160.75 120.75 304.75% blanket
+surf 4 cyl 0.0 0.0 162.75 118.75 306.75% clad
+surf 5 cyl 0.0 0.0 182.75 118.75 306.75% prot
+surf 6 cyl 0.0 0.0 206.45 100 325.5 % fuel
+surf 7 cyl 0.0 0.0 226.45 0 425.5 % clad
 
-% --- Cells:
-
-solid 3
-"./type8.ifc"
-
-% Middle fuel:
-
-cell 11  2  void      -3              % Boundary
-cell 19  0  fill 1    -2              % Reactor
-cell 20  0  outside    2
+cell 1 0 Fuel -1
+cell 2 0 Clad 1 -2
+cell 3 0 Blanket 2 -3
+cell 4 0 Clad 2 3 -4
+cell 5 0 Prot 4 -5
+cell 6 0 Fuel 5 -6
+cell 7 0 Clad 6 -7
+cell 8 0 outside  7 % Outside world
 
 
-mat Fuel  -4.1249 rgb 250 250 50
+mat Fuel -4.1249 tmp 900.0 rgb 250 250 50
 Li-7.09c        77.499225
 Li-6.09c        0.000775
 F-19.09c       167.50
-Th-232.09c      19.985
-U-233.09c        2.515
+Th-232.09c      19.899
+U-233.09c        2.601
 
 %-----Table 3 from Benchmark-----
-mat Blanket -4.1249 rgb 255 105 180
+mat Blanket -4.1249 tmp 900.0 rgb 255 105 180
 Li-7.09c        77.499225
 Li-6.09c        0.000775
 F-19.09c       167.50
-Th-232.09c      22.5
+90232.09c      22.5
 
 %-----Table 2 and Subsection 2.3.2 from Benchmark-----
-mat Clad -10 rgb 0 71 171
+mat Clad -10 tmp 900.0 rgb 0 71 171
 Ni-nat.09c    677.53
 W-nat.09c     85.09
 Cr-nat.09c    68.36
@@ -52,7 +56,7 @@ Si-nat.09c    2.149
 S-nat.09c     0.034
 
 %-----Subsection 2.3.2 from Benchmark-----
-mat Prot -2.52 rgb 255 140 0
+mat Prot -2.52 tmp 900.0 rgb 255 140 0
 5010.09c    0.021753673
 5011.09c    0.088113366
 %----There is no library for C 13. testing natural Carbon from existing library-----
@@ -74,8 +78,6 @@ mesh 2 500 500  0
 mesh 3 500 500  0
 
 set pop 10000 100 10
-
-set bc 2 2 1
 
 set ifp 20
 
