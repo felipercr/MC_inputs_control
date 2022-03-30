@@ -38,7 +38,7 @@ mat blanket -4.1249 burn 1 tmp 900.0 vol 7.3E06 rgb 255 105 180
 Li-7.09c        77.499225
 Li-6.09c        0.000775
 F-19.09c       167.50
-Th-232.09c      22.5
+90232.09c      22.5
 
 %-----Table 2 and Subsection 2.3.2 from Benchmark-----
 mat clad -10 tmp 900.0 rgb 0 71 171
@@ -191,11 +191,11 @@ mat blanket_gastank  0.0 burn 1 tmp 900.0 vol 6.5e6
 mat blanket_tank  0.0 tmp 900.0 burn 1 tmp 900.0 vol 1e6
 
 mat fuel_rep -12.5 burn 1 tmp 900.0 vol 1e6 rgb 250 250 50
-Th-232.09c      19.899
-U-233.09c       2.601
+90232.09c      19.899
+92233.09c       2.601
 
 mat blanket_rep -11.7 burn 1 tmp 900.0 vol 1e6 rgb 255 105 180
-Th-232.09c      1.0
+90232.09c      1.0
 
 %-----Seems wise to separate gaseous FP from solid in order to have separate info
 

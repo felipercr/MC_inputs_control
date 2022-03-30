@@ -1,5 +1,5 @@
 import re
-import pandas as pd
+#import pandas as pd
 
 #Represents a neutronic input file
 class neutronic_input():
@@ -124,13 +124,13 @@ class neutronic_output():
                 keff_sd, beta_zero_sd, gen_time_sd, beta_eff_sd]
 
         if self.inp_file:
-            self.plt_data = pd.DataFrame(
-                    data, 
-                    index=['keff', 'beta_zero', 'gen_time', 'beta_eff', 
-                        'keff_sd', 'beta_zero_sd', 'gen_time_sd', 'beta_eff_sd'],
-                    columns=timesteps(self.inp_file)
-                )
-            self.plt_data = self.plt_data.transpose()
+            #self.plt_data = pd.DataFrame(
+            #        data, 
+            #        index=['keff', 'beta_zero', 'gen_time', 'beta_eff', 
+            #            'keff_sd', 'beta_zero_sd', 'gen_time_sd', 'beta_eff_sd'],
+            #        columns=timesteps(self.inp_file)
+            #    )
+            #self.plt_data = self.plt_data.transpose()
             values = [
                         f"ANA_KEFF = {keff} {keff_sd}\n", 
                         f"FWD_ANA_BETA_ZERO = {beta_zero} {beta_zero_sd}\n", 

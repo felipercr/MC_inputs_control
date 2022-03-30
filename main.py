@@ -1,5 +1,5 @@
 from io_data import *
-from plots import *
+#from plots import *
 import os
 import time
 
@@ -24,7 +24,7 @@ def log_check():
 
     if "Transport cycle completed in" in log.read():
         log.close()
-        print('log - true')
+        print('log - true\n')
         time.sleep(2)
         return True
     
@@ -44,10 +44,10 @@ def keff_converged(keff, keff_sd):
     print(lowest)
 
     if keff > highest or keff < lowest: 
-        print("Converged = False \n")
+        print("Converged = False \n\n")
         return False
     else: 
-        print("Converged = True \n")
+        print("Converged = True \n\n")
         return True
 
 #Find U and Th values for KEFF = 1 by doing some simulatios
