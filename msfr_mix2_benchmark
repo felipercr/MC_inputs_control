@@ -1,0 +1,122 @@
+%-----Benchmark MSFR-----
+%-----Neutronic benchmark of the molten salt fast reactor in the frame of the EVOL and MARS collaborative projects-----
+%-----Initial test using ENDF7-----
+
+%-----Geometry-----
+
+pin reactor
+fuel 112.75
+clad 114.75
+blanket 160.75
+clad 162.75
+prot 182.75
+fuel 206.45
+clad
+
+pin topbotclad
+fuel 112.75
+clad 162.75
+prot 182.75
+fuel 206.45
+clad
+
+pin topbotfuel
+fuel 206.45
+clad
+
+pin clad
+clad 226.45
+clad
+
+%Middle of the reactor
+surf s1 cylz 0 0 226.45 -92  92
+%Top part. clad + protector
+surf s2 cylz 0 0 226.45 92 94
+%Bottom part. clad + protector
+surf s3 cylz 0 0 226.45 -94 -92
+%Top part. only clad
+surf s4 cylz 0 0 226.45 94 112.75
+%Bottom part. only clad
+surf s5 cylz 0 0 226.45 -112.75 -94
+%Top radial limit of the reactor
+surf s6 cylz 0 0 226.45 112.75  212.75
+%Bottom radial limit of the reactor
+surf s7 cylz 0 0 226.45 -212.75 -112.75
+
+cell c1 0 fill reactor -s1
+cell c2 0 fill topbotclad  -s2
+cell c3 0 fill topbotclad  -s3
+cell c6 0 fill topbotfuel  -s4
+cell c7 0 fill topbotfuel  -s5
+cell c8 0 fill clad  -s6
+cell c9 0 fill clad  -s7
+cell c99 0 outside s1 s2 s3 s4 s5 s6 s7
+
+mat fuel  -4.1249 tmp 900.0 rgb 250 250 50
+Li-7.09c        77.496125
+Li-6.09c        0.003875
+F-19.09c        167.50
+Th-232.09c      16.28825376760269
+Np-237.09c        0.3911922289101089
+Pu-238.09c        0.16806777242063933
+Pu-239.09c        2.851356690722571
+Pu-240.09c        1.335849018722668
+Pu-241.09c        0.6645438357781603
+Pu-242.09c        0.4163058040993998
+Am-241.09c        0.21153357563287367
+Am-243.09c        0.11784062204205747
+Cm-244.09c        0.04926124364053222
+Cm-245.09c        0.005795440428297909
+
+%-----Table 3 from Benchmark-----
+mat blanket -4.1249 tmp 900.0 rgb 255 105 180
+Li-7.09c        77.499225
+Li-6.09c        0.000775
+F-19.09c        167.50
+Th-232.09c      22.5
+
+%-----Table 2 and Subsection 2.3.2 from Benchmark-----
+mat clad -10 tmp 900.0 rgb 0 71 171
+Ni-nat.09c    677.53
+W-nat.09c     85.09
+Cr-nat.09c    68.36
+Mo-nat.09c    6.278
+Fe-nat.09c    5.391
+Ti-nat.09c    2.516
+6000.09c      2.508
+25055.09c     1.192
+Si-nat.09c    2.149
+13027.09c     0.444
+5010.09c      0.055919
+5011.09c      0.225081
+15031.09c     0.196
+S-nat.09c     0.034
+
+%-----Subsection 2.3.2 from Benchmark-----
+mat prot -2.52 tmp 900.0 rgb 255 140 0
+5010.09c    0.021753673
+5011.09c    0.088113366
+%----There is no library for C 13. testing natural Carbon from existing library-----
+6000.09c    0.02746676
+
+%-----Cross section path-----
+
+set acelib "/opt/xsdata/sss_endfb7u.xsdata"
+set ures 1
+
+%-----Run. boundary and plot parameters-----
+
+plot 1 500 500 0
+plot 2 500 500 0
+plot 3 500 500 0
+
+mesh 1 500 500  0
+mesh 2 500 500  0
+mesh 3 500 500  0
+
+set pop 10000 100 10
+
+set ifp 20
+
+set power 3.00E+09
+

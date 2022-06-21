@@ -1,24 +1,27 @@
 import re
+import os
+import time 
 #import pandas as pd
 
 #Represents a neutronic input file
 class neutronic_input():
 
     #If the file already exists
-    def __init__(self, name): 
+    def __init__(self, name, mix = None): 
         self.name = name
-        self.__find_U_and_Th()
+        self.mix = mix
+        self.__find_elements()
 
     #Create a new input file with new values for U and Th
-    def new_input(self, thorium, uranium):
+    def new_input_mix1(self, thorium, uranium):
         with open(self.name, 'r') as f:
             copy = f.readlines()
             for index, line in enumerate(copy):
                 if re.search("Th-232.09c", line):
-                    copy[index] = "Th-232.09c      {:.3f}\n".format(thorium)
-                elif re.search("U-233.09c", line):
-                    copy[index] = "U-233.09c        {:.3f}\n".format(uranium)
-
+                    copy[index] = "Th-232.09c      {}\n".format(thorium)
+                if re.search("U-233.09c", line):
+                    copy[index] = "U-233.09c        {}\n".format(uranium)
+                    
         with open(self.name, 'w') as f:
             for line in copy:
                 f.write(line)
@@ -26,15 +29,78 @@ class neutronic_input():
         self.U = uranium
         self.Th = thorium
 
+    def new_input_mix2(self, thorium, mix2_vals):
+        with open(self.name, 'r') as f:
+            copy = f.readlines()
+            once = 1
+            for index, line in enumerate(copy):
+                if once:
+                    if re.search("Th-232.09c", line):
+                        copy[index] = "Th-232.09c      {}\n".format(thorium)
+                        once = None
+                if re.search("Np-237.09c", line):
+                    copy[index] = "Np-237.09c        {}\n".format(mix2_vals[0])
+                if re.search("Pu-238.09c", line):
+                    copy[index] = "Pu-238.09c        {}\n".format(mix2_vals[1])
+                if re.search("Pu-239.09c", line):
+                    copy[index] = "Pu-239.09c        {}\n".format(mix2_vals[2])
+                if re.search("Pu-240.09c", line):
+                    copy[index] = "Pu-240.09c        {}\n".format(mix2_vals[3])
+                if re.search("Pu-241.09c", line):
+                    copy[index] = "Pu-241.09c        {}\n".format(mix2_vals[4])
+                if re.search("Pu-242.09c", line):
+                    copy[index] = "Pu-242.09c        {}\n".format(mix2_vals[5])
+                if re.search("Am-241.09c", line):
+                    copy[index] = "Am-241.09c        {}\n".format(mix2_vals[6])
+                if re.search("Am-243.09c", line):
+                    copy[index] = "Am-243.09c        {}\n".format(mix2_vals[7])
+                if re.search("Cm-244.09c", line):
+                    copy[index] = "Cm-244.09c        {}\n".format(mix2_vals[8])
+                if re.search("Cm-245.09c", line):
+                    copy[index] = "Cm-245.09c        {}\n".format(mix2_vals[9])
+                    
+        with open(self.name, 'w') as f:
+            for line in copy:
+                f.write(line)
+
+        self.M2V = mix2_vals
+        self.Th = thorium
+        
+
     #Get the values from U and Th from an existing input file
-    def __find_U_and_Th(self):                            
+    def __find_elements(self):                            
         path_file = f"{self.name}"
         with open(path_file, 'r') as f:
             for line in f:
                 if re.search("Th-232.09c", line):
                     self.Th = float(line.split()[1])
-                if re.search("U-233.09c", line):
-                    self.U  = float(line.split()[1])
+                if self.mix == None:
+                    if re.search("U-233.09c", line):
+                        self.U  = float(line.split()[1])
+                else:
+                    if re.search("Np-237.09c", line):
+                        Np237  = float(line.split()[1])
+                    if re.search("Pu-238.09c", line):
+                        Pu238  = float(line.split()[1])
+                    if re.search("Pu-239.09c", line):
+                        Pu239  = float(line.split()[1])
+                    if re.search("Pu-240.09c", line):
+                        Pu240  = float(line.split()[1])
+                    if re.search("Pu-241.09c", line):
+                        Pu241  = float(line.split()[1])
+                    if re.search("Pu-242.09c", line):
+                        Pu242  = float(line.split()[1])
+                    if re.search("Am-241.09c", line):
+                        Am241  = float(line.split()[1])
+                    if re.search("Am-243.09c", line):
+                        Am243  = float(line.split()[1])
+                    if re.search("Cm-244.09c", line):
+                        Cm244  = float(line.split()[1])
+                    if re.search("Cm-245.09c", line):
+                        Cm245  = float(line.split()[1])
+            if self.mix:
+                self.mix2_vals = [Np237, Pu238, Pu239, Pu240, Pu241, Pu242, Am241, Am243, Cm244, Cm245]
+
 
     #Create two new input files based on an existing one. In one of them 
     #the temperature changes, and, in the other one, the density changes.
@@ -190,3 +256,45 @@ def timesteps(file):
         years.append(sum)
 
     return years
+
+def log_check():
+    time.sleep(4)
+
+    if os.path.exists('logserpent') == False:
+        return False
+
+    log = open("logserpent", 'r')
+
+    if "Transport cycle completed in" in log.read():
+        log.close()
+        print('log - true\n')
+        time.sleep(2)
+        return True
+    
+    log.close()
+
+    return False
+
+def keff_converged(keff, keff_sd):
+    rng = 2 * keff_sd
+    highest = 1 + rng
+    lowest = 1 - rng
+
+    print(keff)
+    print(keff_sd)
+    print(rng)
+    print(highest)
+    print(lowest)
+
+    if keff > highest or keff < lowest: 
+        print("Converged = False \n\n")
+        return False
+    else: 
+        print("Converged = True \n\n")
+        return True
+
+def fuel_constant(): return 22.5
+
+#inp = neutronic_input('msfr_mix2_benchmark', 2)
+#print(inp.mix2_vals)
+
